@@ -1,7 +1,7 @@
 const express = require("express");
 require('dotenv').config();
 
-//const taskRoutes = require("./routes/task.routes");
+const productRoutes = require("./routes/product.route");
 //const authRoutes = require("./routes/auth.routes");
 const app = express();
 
@@ -11,8 +11,8 @@ app.get("/", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
-app.use("/api/products", /*taskRoutes*/);
-app.use("/api/users", /*authRoutes*/);
+app.use("/api/products", productRoutes);
+//app.use("/api/users", /*authRoutes*/);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
