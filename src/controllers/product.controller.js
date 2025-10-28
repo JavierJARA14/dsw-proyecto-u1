@@ -53,7 +53,7 @@ async function updateProduct(req, res) {
     try {
         const exists = await Product.getById(req.params.id);
         if(!exists) return res.status(404).json({message: "This product doesn't exists."});
-        if(!req.body.category || !req.body.name || !req.body.price || !req.body.sat_code || !req.body.stock)
+        if(!req.body.category || !req.body.name || req.body.price == null || !req.body.sat_code || req.body.stock == null)
             return res.status(400).json({ message: "This/These entry cannot be empty." });
         const updated = await Product.updateProduct(req.params.id, req.body);
         return res.status(200).json(updated);
@@ -65,7 +65,7 @@ async function updateProduct(req, res) {
 async function deleteProduct(req, res) {
     try {
     const deleted = await Product.deleteProduct(req.params.id);
-    return deleted ? res.status(204).send().json({message: "Product deleted."}) : res.status(404).json({ message: "This product doesn't exists." });
+    return deleted ? res.status(204).send() : res.status(404).json({ message: "This product doesn't exists." });
   } catch (error) {
     res.status(500).json({message: "Cannot connect to server."});
   }
