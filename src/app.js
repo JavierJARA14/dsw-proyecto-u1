@@ -1,11 +1,16 @@
 const express = require("express");
 require('dotenv').config();
 
-const productRoutes = require("./routes/product.route");
-//const authRoutes = require("./routes/auth.routes");
 const app = express();
 
 app.use(express.json());
+
+const productRoutes = require("./routes/product.route");
+//const authRoutes = require("./routes/auth.routes");
+
+//rutas de usuarios
+const userRoutes = require("./routes/user.route");
+app.use("/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({ status: "ok" });
