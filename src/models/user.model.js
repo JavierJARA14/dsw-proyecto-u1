@@ -15,6 +15,15 @@ async function getById(id) {
   return { id: user.id, ...user.data() };
 }
 
+// Buscar por nombre de usuario
+async function findByUsername(username) {
+    const querySnapshot = await collection.where("username", "==", username).get();
+    if (querySnapshot.empty) return null;
+
+    const doc = querySnapshot.docs[0];
+    return { id: doc.id, ...doc.data() };
+}
+
 // Obtener usuarios por rol
 async function getByRole(role) {
   const querySnapshot = await collection.where("role", "==", role).get();
@@ -46,6 +55,7 @@ async function deleteUser(id) {
 module.exports = {
   getAllUsers,
   getById,
+  findByUsername,
   getByRole,
   addUser,
   updateUser,

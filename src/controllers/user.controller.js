@@ -21,6 +21,18 @@ async function getUserById(req, res) {
   }
 }
 
+// Obtener usuario por username
+async function getUserByUsername(req, res) {
+    try {
+        const username = req.params.username;
+        const user = await User.findByUsername(username);
+        if (!user) return res.status(404).json({ message: "User not found" });
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: "Cannot connect to server." });
+    }
+}
+
 // Obtener usuarios por rol
 async function getUsersByRole(req, res) {
   try {
@@ -76,6 +88,7 @@ async function deleteUser(req, res) {
 module.exports = {
   getAllUsers,
   getUserById,
+  getUserByUsername,
   getUsersByRole,
   addUser,
   updateUser,

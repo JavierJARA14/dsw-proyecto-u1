@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 
 const productRoutes = require("./routes/product.route");
-//const authRoutes = require("./routes/auth.routes");
+const authRoutes = require("./routes/auth.routes");
 
 //rutas de usuarios
 const userRoutes = require("./routes/user.route");
@@ -17,7 +17,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/products", productRoutes);
-//app.use("/api/users", /*authRoutes*/);
+app.use("/api/users", authRoutes);
+app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
