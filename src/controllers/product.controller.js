@@ -42,6 +42,11 @@ async function addProduct(req, res) {
     try {
         if(!req.body.category || !req.body.name || req.body.price == null || !req.body.sat_code || req.body.stock == null)
             return res.status(400).json({ message: "This/These entry cannot be empty." });
+        const product = {
+            price: req.body.price,
+
+        };
+        
         const newProduct = await Product.addProduct(req.body);
         res.status(201).json(newProduct);
     } catch (error) {
