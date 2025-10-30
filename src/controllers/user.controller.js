@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const facturapiService =  require("../services/facturapi.service");
 
 // Obtener todos los usuarios
 async function getAllUsers(req, res) {
@@ -46,14 +47,26 @@ async function getUsersByRole(req, res) {
 // Crear usuario
 async function addUser(req, res) {
   try {
-    const { facturapi_id, username, role, address, rfc, password, mail } = req.body;
+    const {username, role, address, rfc, password, mail } = req.body;
     if (!username || !role || !address || !rfc || !password || !mail)
       return res.status(400).json({ message: "This/These entry cannot be empty." });
-
+    const customer = {
+      legal_name: req.body.username,
+      tax_id: req.body.rfc,
+      tax_system: "612",
+       address: {
+          zip: '86991',
+          neighborhood: req.body.address.colonia || 'Colonia Falsa',
+          street: req.body.address.direccion || 'Calle Falsa 123',
+          exterior: req.body.address.numeroExterior || '123'
+        },
+    };
+    const facturapiRes = await facturapiService.createCustomer(customer);
+    const facturapi_id = facturapiRes.id;
     const newUser = await User.addUser({ facturapi_id, username, role, address, rfc, password, mail });
     res.status(201).json(newUser);
   } catch (error) {
-    res.status(500).json({ message: "Cannot connect to server." });
+    res.status(500).json({ message: "Cannot connect to server.", error: error});
   }
 }
 

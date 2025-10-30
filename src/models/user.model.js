@@ -1,4 +1,4 @@
-const admin = require("../config");
+const admin = require("../config/config");
 const db = admin.firestore();
 const collection = db.collection("users");
 
