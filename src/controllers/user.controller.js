@@ -46,20 +46,16 @@ async function getUsersByRole(req, res) {
 
 // Crear usuario
 async function addUser(req, res) {
+  const {username, role, rfc, password, mail, address} = req.body;
   try {
-    const {username, role, address, rfc, password, mail } = req.body;
-    if (!username || !role || !address || !rfc || !password || !mail)
+    if (!username || !role || !rfc || !password || !mail)
       return res.status(400).json({ message: "This/These entry cannot be empty." });
+    if(!address.zip) return res.status(400).json({message: "Must have at least the zip code."});
     const customer = {
-      legal_name: req.body.username,
-      tax_id: req.body.rfc,
+      legal_name: username,
+      tax_id: rfc,
       tax_system: "612",
-       address: {
-          zip: '86991',
-          neighborhood: req.body.address.colonia || 'Colonia Falsa',
-          street: req.body.address.direccion || 'Calle Falsa 123',
-          exterior: req.body.address.numeroExterior || '123'
-        },
+      address: address,
     };
     const facturapiRes = await facturapiService.createCustomer(customer);
     const facturapi_id = facturapiRes.id;
