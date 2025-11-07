@@ -15,12 +15,12 @@ const createCustomer = async (data) => {
 const createProduct = async (data) => {
   try{
     const res = await api.post('/products', {
-      name: data.nombre,
-      price: data.precio,
-      product_key: data.product_key || "60101811",
+      name: data.name,
+      price: data.price,
+      product_key: "60101811",
       unit_key: data.unit_key || "H87",
       stock: data.stock,
-      description: data.descripcion,
+      description: data.descripcion || "Producto",
       tax_included: data.tax_included !== undefined ? data.tax_included : true
     });
     return res.data;
@@ -44,5 +44,5 @@ exports.createInvoice = async (invoiceData) => {
 
 module.exports = {
   createCustomer,
-
+  createProduct,
 }

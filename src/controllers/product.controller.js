@@ -61,7 +61,7 @@ async function addProduct(req, res) {
 
     // Crear producto en Facturapi
     const facturapiRes = await facturapiService.createProduct(facturapiProduct);
-    const facturapi_id = facturapiRes.id;
+    let facturapi_id = facturapiRes.id;
 
     // Guardar en Firestore con el facturapi_id
     const newProduct = await Product.addProduct({
