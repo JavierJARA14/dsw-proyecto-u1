@@ -75,8 +75,7 @@ async function addProduct(req, res) {
 
     res.status(201).json(newProduct);
   } catch (error) {
-    console.error("❌ Error creating product:", error);
-    res.status(500).json({ message: "Cannot connect to server.", error: error.message });
+    res.status(500).json({ message: "Cannot connect to server." });
   }
 }
 
@@ -90,15 +89,6 @@ async function updateProduct(req, res) {
     if (!category || !name || price == null || !sat_code || stock == null)
       return res.status(400).json({ message: "This/These entry cannot be empty." });
 
-    // Si tiene un facturapi_id, también actualizamos allá
-    if (facturapi_id) {
-      await facturapiService.updateProduct(facturapi_id, {
-        description: name,
-        product_key: sat_code,
-        price: parseFloat(price),
-      });
-    }
-
     const updated = await Product.updateProduct(req.params.id, {
       facturapi_id,
       category,
@@ -110,7 +100,7 @@ async function updateProduct(req, res) {
 
     res.status(200).json(updated);
   } catch (error) {
-    console.error("❌ Error updating product:", error);
+    console.error("Error updating product:", error);
     res.status(500).json({ message: "Cannot connect to server.", error: error.message });
   }
 }
@@ -121,15 +111,10 @@ async function deleteProduct(req, res) {
     const product = await Product.getById(req.params.id);
     if (!product) return res.status(404).json({ message: "This product doesn't exist." });
 
-    // Si tiene facturapi_id, eliminar también allá
-    if (product.facturapi_id) {
-      await facturapiService.deleteProduct(product.facturapi_id);
-    }
-
     await Product.deleteProduct(req.params.id);
     res.status(200).json({ message: "Product deleted." });
   } catch (error) {
-    console.error("❌ Error deleting product:", error);
+    console.error("Error deleting product:", error);
     res.status(500).json({ message: "Cannot connect to server.", error: error.message });
   }
 }
