@@ -79,7 +79,7 @@ async function addProduct(req, res) {
   }
 }
 
-// Actualizar producto (y en Facturapi)
+// Actualizar producto 
 async function updateProduct(req, res) {
   try {
     const exists = await Product.getById(req.params.id);
@@ -105,7 +105,7 @@ async function updateProduct(req, res) {
   }
 }
 
-// Eliminar producto (también en Facturapi)
+// Eliminar producto 
 async function deleteProduct(req, res) {
   try {
     const product = await Product.getById(req.params.id);
