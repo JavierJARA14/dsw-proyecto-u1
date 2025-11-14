@@ -35,7 +35,7 @@ async function updateCart(id, data) {
 }
 
 // Eliminar carrito
-async function deleteCart(id) {
+async function deleteProductFromCart(id) {
   const doc = collection.doc(id);
   const exists = await doc.get();
   if (!exists.exists) return null;
@@ -49,5 +49,5 @@ module.exports = {
   getByUserId,
   addCart,
   updateCart,
-  deleteCart
+  deleteProductFromCart
 };
