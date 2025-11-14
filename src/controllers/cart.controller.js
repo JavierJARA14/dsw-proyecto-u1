@@ -106,16 +106,35 @@ async function updateCart(req, res) {
   }
 }
 
-// Eliminar carrito
+// Eliminar un producto dentro del carrito 
 async function deleteCart(req, res) {
+  const { id } = req.params; // id del carrito
+  const { productId } = req.body; // id del producto a eliminar
+
   try {
-    const deleted = await Cart.deleteCart(req.params.id);
-    if (!deleted) return res.status(404).json({ message: "This cart doesn't exist." });
-    res.status(200).json({ message: "Cart deleted." });
+    const cart = await Cart.getById(id);
+    if (!cart) return res.status(404).json({ message: "This cart doesn't exist." });
+
+    // Buscar si el producto está dentro del carrito
+    const exists = cart.products.some(p => p.idProduct === productId);
+    if (!exists) return res.status(404).json({ message: "Product not found in cart." });
+
+    // Filtrar los productos y eliminar el deseado
+    const updatedProducts = cart.products.filter(p => p.idProduct !== productId);
+
+    // Actualizar el carrito
+    const updatedCart = await Cart.updateCart(id, { products: updatedProducts });
+
+    res.status(200).json({
+      message: "Product removed from cart successfully.",
+      cart: updatedCart
+    });
   } catch (error) {
-    res.status(500).json({ message: "Cannot connect to server." });
+    console.error(error);
+    res.status(500).json({ message: "Cannot remove product from cart.", error });
   }
 }
+
 
 module.exports = {
   getAllCarts,

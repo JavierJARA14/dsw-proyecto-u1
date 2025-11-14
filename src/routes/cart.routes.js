@@ -12,6 +12,7 @@ router.get("/user/:userId", authenticate, controller.getCartsByUser);
 router.post("/", authenticate, controller.addCart);
 router.post("/:id/product", authenticate, controller.addProductToCart);
 router.put("/:id", authenticate, controller.updateCart);
-router.delete("/:id", authenticate, roleAuth("admin"), controller.deleteCart);
+router.delete("/:id", authenticate, controller.deleteCart);
+
 
 module.exports = router;
